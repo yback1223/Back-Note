@@ -1,0 +1,10 @@
+[project]
+name = "back-note"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "streamlit>=1.47.1",
+    "streamlit-option-menu>=0.4.0",
+]
