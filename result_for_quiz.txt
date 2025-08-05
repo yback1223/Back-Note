@@ -1,0 +1,143 @@
+
+[
+    {
+        "question": "What is the primary mission of the Cloud Native Computing Foundation (CNCF)?",
+        "options": [
+            "To create proprietary cloud software for enterprises.",
+            "To make cloud-native computing ubiquitous by fostering open-source projects.",
+            "To directly compete with major cloud providers like AWS and Google Cloud.",
+            "To manage the development of the Linux kernel."
+        ],
+        "user_answer": "To create proprietary cloud software for enterprises.",
+        "real_answer": "To make cloud-native computing ubiquitous by fostering open-source projects.",
+        "score": "Incorrect",
+        "correction_and_explanation": "Your answer was incorrect. The CNCF's core mission is centered around open-source, not proprietary, software. The correct answer is that the CNCF aims to make cloud-native computing ubiquitous by fostering and sustaining an ecosystem of open-source, vendor-neutral projects.",
+        "additional_context": "The CNCF is a non-profit organization and part of the larger Linux Foundation. Its mission is to promote the adoption of cloud-native computing. It achieves this by hosting and supporting critical open-source projects like Kubernetes, Prometheus, and Envoy. The foundation provides a neutral space for collaboration among developers, end-users, and vendors, including major competitors, to advance the state of the art in the industry for everyone's benefit."
+    },
+    {
+        "question": "Which CNCF project maturity level corresponds to the 'Early Majority' in the technology adoption lifecycle, indicating it has successfully 'crossed the chasm'?",
+        "options": [
+            "Sandbox",
+            "Incubating",
+            "Graduated",
+            "Archived"
+        ],
+        "user_answer": "Sandbox",
+        "real_answer": "Graduated",
+        "score": "Incorrect",
+        "correction_and_explanation": "Your selection of 'Sandbox' was incorrect. Sandbox is the very first stage for new, experimental projects, which aligns with the 'Innovators' phase of the technology adoption lifecycle. The correct answer is 'Graduated'. Graduated projects are stable, widely used in production, and have demonstrated a sustainable, diverse community, signifying they have 'crossed the chasm' to the 'Early Majority' of users.",
+        "additional_context": "The concept of 'crossing the chasm' comes from Geoffrey Moore's book of the same name. It describes the difficult transition from selling to a small group of visionary 'Early Adopters' to a much larger, more pragmatic mainstream market, the 'Early Majority'. The CNCF's maturity levels—Sandbox (Innovators), Incubating (Early Adopters), and Graduated (Early Majority)—are explicitly designed to mirror this lifecycle, providing a clear signal to enterprises about a project's maturity and readiness for adoption."
+    },
+    {
+        "question": "What is the main responsibility of the CNCF's Technical Oversight Committee (TOC)?",
+        "options": [
+            "Marketing and event planning for KubeCon.",
+            "Writing code for all CNCF projects.",
+            "Providing legal counsel to member companies.",
+            "Defining the technical vision and approving the progression of projects through maturity levels."
+        ],
+        "user_answer": "Marketing and event planning for KubeCon.",
+        "real_answer": "Defining the technical vision and approving the progression of projects through maturity levels.",
+        "score": "Incorrect",
+        "correction_and_explanation": "Your answer was incorrect. Marketing and events are handled by the CNCF Governing Board and staff. The Technical Oversight Committee (TOC) is the technical governing body of the CNCF. Its primary responsibility is to define and maintain the foundation's technical vision, which includes accepting new projects and formally approving their advancement from Sandbox to Incubating and ultimately to Graduated status.",
+        "additional_context": "The CNCF has a clear separation of duties. The Governing Board handles budget, marketing, and business oversight. The TOC, composed of elected technical experts from across the community, provides technical leadership. They do not write the code for projects but rather ensure that projects meet high standards of technical quality, governance, and community health before being promoted. This structure helps maintain vendor neutrality and a focus on technical excellence."
+    },
+    {
+        "question": "In the context of the CNCF, what does the term \"the chasm\" refer to?",
+        "options": [
+            "The gap in funding between Sandbox and Incubating projects.",
+            "The challenge of moving a project from the early adopters to the mainstream market.",
+            "A security vulnerability found in all cloud-native applications.",
+            "The division between the Governing Board and the Technical Oversight Committee."
+        ],
+        "user_answer": "The gap in funding between Sandbox and Incubating projects.",
+        "real_answer": "The challenge of moving a project from the early adopters to the mainstream market.",
+        "score": "Incorrect",
+        "correction_and_explanation": "Your answer was incorrect. 'The chasm' is a well-known concept in the technology industry that is not about funding. The correct answer is that it refers to the significant challenge of transitioning a technology product or project from a small group of enthusiastic 'early adopters' to a much larger, more pragmatic mainstream audience (the 'early majority').",
+        "additional_context": "This term was popularized by Geoffrey Moore's book, \"Crossing the Chasm\". Moore argues that the needs and buying habits of early adopters (who are visionaries) are fundamentally different from those of the early majority (who are pragmatists). To be successful, a project must bridge this gap. The CNCF's project maturity levels are designed to help projects navigate this journey, with the 'Graduated' status signaling that a project has successfully crossed the chasm."
+    },
+    {
+        "question": "What is a key requirement for a project to move from the Sandbox to the Incubating stage?",
+        "options": [
+            "It must be at least five years old.",
+            "It must be written in the Go programming language.",
+            "It must demonstrate growing adoption, such as use by at least three end-users in production.",
+            "It must have its trademark transferred to a major corporation."
+        ],
+        "user_answer": "It must be at least five years old.",
+        "real_answer": "It must demonstrate growing adoption, such as use by at least three end-users in production.",
+        "score": "Incorrect",
+        "correction_and_explanation": "Your answer was incorrect. There is no age requirement for a project to move to the Incubating stage. The correct answer is that a project must show real-world traction and growing adoption. Specifically, the CNCF requires documented use by at least three independent end-users in production, which demonstrates that the project is solving a real problem and is on a path to sustainability.",
+        "additional_context": "Beyond demonstrating use by at least three end users in production, projects seeking to move from Sandbox to Incubating must also show a healthy, ongoing flow of commits and merged contributions, have a clear and public governance model, and have committers from at least two different organizations. These criteria ensure that a project is not only useful but also has a healthy, diverse, and sustainable community behind it."
+    },
+    {
+        "question": "What is the relationship between CNCF Technical Advisory Groups (TAGs) and the Technical Oversight Committee (TOC)?",
+        "options": [
+            "TAGs have the final vote on graduating projects.",
+            "The TOC is a subcommittee of a single TAG.",
+            "TAGs provide domain-specific expertise and recommendations to the TOC.",
+            "They are completely separate entities with no interaction."
+        ],
+        "user_answer": "TAGs have the final vote on graduating projects.",
+        "real_answer": "TAGs provide domain-specific expertise and recommendations to the TOC.",
+        "score": "Incorrect",
+        "correction_and_explanation": "Your answer is incorrect. The final decision-making authority, including votes on project graduation, rests solely with the Technical Oversight Committee (TOC). The correct answer is that Technical Advisory Groups (TAGs) are advisory bodies that provide deep, domain-specific expertise and recommendations to the TOC to help them make informed decisions.",
+        "additional_context": "The TAG system was created to help the TOC scale as the number of CNCF projects grew. There are TAGs for specific areas like Security, Storage, App Delivery, and Observability. When a new project applies to the CNCF or seeks to move to a new maturity level, the relevant TAG will perform a detailed technical due diligence review and present its findings and recommendations to the TOC. This allows the TOC to leverage the expertise of specialists across the cloud native ecosystem."
+    },
+    {
+        "question": "Why were CNCF Special Interest Groups (SIGs) renamed to Technical Advisory Groups (TAGs)?",
+        "options": [
+            "To reflect a change in their core mission.",
+            "Because of a legal trademark dispute.",
+            "To avoid confusion with the project-specific SIGs within Kubernetes.",
+            "To allow them to accept more projects."
+        ],
+        "user_answer": "To reflect a change in their core mission.",
+        "real_answer": "To avoid confusion with the project-specific SIGs within Kubernetes.",
+        "score": "Incorrect",
+        "correction_and_explanation": "Your answer was incorrect. The core mission of the groups did not change. The renaming from Special Interest Groups (SIGs) to Technical Advisory Groups (TAGs) in 2021 was done for a practical reason: to eliminate confusion with the well-established Special Interest Groups (SIGs) within the Kubernetes project, which have similar names but a different scope (e.g., SIG-Network, SIG-Storage).",
+        "additional_context": "The Kubernetes project, being the first and largest project in the CNCF, has its own robust governance structure, which includes many SIGs that manage specific parts of the Kubernetes codebase. As the CNCF grew and established its own foundation-wide advisory groups, the overlapping terminology became confusing for community members. Adopting the name 'Technical Advisory Group' (TAG) created a clear distinction between the CNCF-level advisory bodies and the Kubernetes-specific project groups."
+    },
+    {
+        "question": "Which of the following is an example of a 'Graduated' CNCF project?",
+        "options": [
+            "A brand-new, experimental logging tool.",
+            "A project with a single corporate backer and two users.",
+            "Kubernetes.",
+            "A project that was just accepted into the Sandbox."
+        ],
+        "user_answer": "A brand-new, experimental logging tool.",
+        "real_answer": "Kubernetes.",
+        "score": "Incorrect",
+        "correction_and_explanation": "Your answer is incorrect. A new, experimental tool would be a perfect candidate for the 'Sandbox' stage, not 'Graduated'. The quintessential example of a Graduated CNCF project is Kubernetes. It is highly mature, incredibly stable, and has achieved massive global adoption, which are the hallmarks of the Graduated level.",
+        "additional_context": "Graduation is the highest maturity level for a CNCF project. Besides Kubernetes, other well-known Graduated projects include Prometheus (monitoring and alerting), Envoy (service proxy), Containerd (container runtime), Fluentd (logging), Helm (package manager for Kubernetes), and Jaeger (distributed tracing). These projects form the backbone of many modern cloud native stacks and are considered ready for mission-critical production use by a wide range of organizations."
+    },
+    {
+        "question": "What does the 'Sandbox' level signify for a CNCF project?",
+        "options": [
+            "The project is ready for widespread, critical production use.",
+            "It is a highly mature and stable project.",
+            "It is an early-stage, experimental project being nurtured by the CNCF.",
+            "The project is about to be archived due to inactivity."
+        ],
+        "user_answer": "The project is ready for widespread, critical production use.",
+        "real_answer": "It is an early-stage, experimental project being nurtured by the CNCF.",
+        "score": "Incorrect",
+        "correction_and_explanation": "Your answer describes a 'Graduated' project and is therefore incorrect. The 'Sandbox' is the very first entry point for projects into the CNCF. It correctly signifies that a project is at an early stage, potentially experimental, and is being nurtured within the CNCF ecosystem to encourage visibility and growth.",
+        "additional_context": "The CNCF Sandbox serves several key purposes. It provides a neutral home for promising early-stage projects, giving them visibility and access to the wider cloud native community. It helps these projects align with CNCF principles and best practices from the start, and it removes legal and governance hurdles that might otherwise hinder their adoption and contribution. For the CNCF, it's a way to foster innovation and explore new ideas that could become important parts of the cloud native landscape in the future."
+    },
+    {
+        "question": "According to the lecture notes, how are major decisions, such as project graduation, typically resolved if discussions do not lead to a consensus?",
+        "options": [
+            "The decision is postponed indefinitely.",
+            "The project is automatically archived.",
+            "The issue is escalated to the Linux Foundation's board.",
+            "Through a formal voting process by the TOC."
+        ],
+        "user_answer": "The decision is postponed indefinitely.",
+        "real_answer": "Through a formal voting process by the TOC.",
+        "score": "Incorrect",
+        "correction_and_explanation": "Your answer is incorrect. While open discussion and consensus are highly valued, a mechanism exists to prevent indefinite postponement and ensure decisions are made. The correct process for resolving major decisions that lack consensus, such as graduating a project, is through a formal vote by the members of the Technical Oversight Committee (TOC).",
+        "additional_context": "The CNCF TOC operates with a clear governance structure outlined in its charter. For significant decisions like project acceptance or moving a project to a new maturity level, a formal vote is required. This ensures that even when there are differing opinions, there is a transparent and fair process for moving forward. The voting thresholds are defined in the charter, ensuring that a sufficient majority of the technical leadership agrees before a decision is finalized."
+    }
+]
