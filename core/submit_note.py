@@ -2,7 +2,7 @@ import copy
 import json
 from .gemini_work import call_gemini
 
-def create_submit_note_prompt(note: str, quiz_type_structure: dict) -> str:
+def create_submit_note_prompt(note: str, quiz_structure: dict) -> str:
 
     prompt_data = {
         "role": "You are an AI Lecture Transcript Analyst and Tutor. Your primary function is to help me understand lecture material better by analyzing, refining, and explaining concepts based on the transcripts I provide.",
@@ -17,16 +17,19 @@ def create_submit_note_prompt(note: str, quiz_type_structure: dict) -> str:
             "Provide Examples: Where appropriate, offer relevant examples, analogies, or real-world applications to illustrate the concepts discussed in the lecture.",
             "Connect to Broader Topics: If possible, explain how the concepts in the transcript relate to larger themes within the subject or to previously discussed topics.",
             "Suggest Further Learning: If relevant, suggest resources (articles, videos, concepts to Google) for deeper exploration of the topics.",
-            "IMPORTANT: Do not include bracketed source citations in the summary and quiz."
-            "Return the result just like the example_of_output_format"
+            "DO NOT INCLUDE BRACKETED SOURCE CITATIONS IN THE SUMMARY AND QUIZ like [0, 3, 4, 12, 13, 14, 15].",
+            "YOUR OUTPUT SHOULD BE JSON FORMAT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+            "DO NOT SAY ANYTHING ELSE!!!!! JUST RETURN THE JSON FORMAT I ASKED FOR!!!!!!!!!!!!!",
+            "The summaary should be concise and easy to read and understand.",
+            "Please structure the summary for at-a-glance comprehension. It must be organized into clear categories based on context or usage level, such as 'Most Common Expressions', 'Simpler Terms', and 'More Technical/Professional Expressions'."
         ],
         "example_of_output_format(the result should be a json)": {
-            "summary": "summary in markdown(do not include bracketed source citations)",
+            "summary": "summary in markdown, which looks professional and concise(do not include bracketed source citations)",
             "quiz": [
                 {
                     "question_type": "string(multiple_choice, short_answer, long_answer)",
                     "question": "string",
-                    "options": ["array of strings if question_type is multiple_choice otherwise None"],
+                    "options": ["array of strings if question_type is multiple_choice otherwise None(options don't include option labels)"],
                     "answer": "string"
                 }
             ]
@@ -37,27 +40,24 @@ def create_submit_note_prompt(note: str, quiz_type_structure: dict) -> str:
     }
 
 
-    mc_count = quiz_type_structure.get("multiple_choice", 0)
-    sa_count = quiz_type_structure.get("short_answer", 0)
-    la_count = quiz_type_structure.get("long_answer", 0)
+    mc_count = quiz_structure.get("multiple_choice", 0)
+    sa_count = quiz_structure.get("short_answer", 0)
+    la_count = quiz_structure.get("long_answer", 0)
 
     prompt_data["core_tasks"].append(f"Generate Practice Questions: Create exactly {mc_count} multiple-choice, {sa_count} short-answer, and {la_count} long-answer questions. Adhere strictly to the 'quiz' structure defined in the 'output_format'.")
 
     return json.dumps(prompt_data, indent=4, ensure_ascii=False)
 
-def submit_note(api_key: str, note: str, quiz_type_structure: dict, model: str = "gemini-2.5-pro") -> tuple[dict, dict]:
-    full_prompt = create_submit_note_prompt(note, quiz_type_structure)
+def submit_note(api_key: str, note: str, quiz_structure: dict, model: str = "gemini-2.5-pro") -> tuple[dict, dict]:
+    full_prompt = create_submit_note_prompt(note, quiz_structure)
     full_prompt_json = json.loads(full_prompt)
-    with open("full_prompt_in_submit_note.txt", "w", encoding="utf-8") as f:
-        f.write(full_prompt)
 
     result = call_gemini(
         api_key=api_key,
         prompt=full_prompt,
         model=model
     )
-    with open("result_in_submit_note.txt", "w", encoding="utf-8") as f:
-        f.write(result)
+
     result_json = json.loads(result.replace("```json", "").replace("```", "").replace("```json", "").replace("```", ""))
 
     return full_prompt_json, result_json

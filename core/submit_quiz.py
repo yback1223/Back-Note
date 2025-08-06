@@ -13,7 +13,9 @@ def create_submit_quiz_prompt(quiz: list[dict]) -> str:
             "Offer Additional Information/Context: Regardless of my answer's correctness, provide some relevant background information, interesting facts, or further explanations related to the topic of the question to help deepen my understanding.",
             "Ensure your feedback is always delivered in a patient, constructive, and easy-to-understand way. Focus on helping me learn.",
             "Return the result just like the example_of_output_format which is a list of dictionaries.",
-            "IMPORTANT: Do not include bracketed source citations in the output."
+            "IMPORTANT: Do not include bracketed source citations in the output.",
+            "YOUR OUTPUT SHOULD BE JSON FORMAT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+            "DO NOT SAY ANYTHING ELSE!!!!! JUST RETURN THE JSON FORMAT I ASKED FOR!!!!!!!!!!!!!"
         ],
         "example_of_output_format(the result should be a json)": [
             {
@@ -37,22 +39,13 @@ def submit_quiz(api_key: str, quiz: list[dict], model: str = "gemini-2.5-pro") -
     full_prompt_for_quiz = create_submit_quiz_prompt(quiz)
     full_prompt_json_for_quiz = json.loads(full_prompt_for_quiz)
 
-    with open("full_prompt_for_quiz.json", "w", encoding="utf-8") as f:
-        json.dump(full_prompt_json_for_quiz, f, indent=4, ensure_ascii=False)
-
     result_for_quiz = call_gemini(
         api_key=api_key,
         prompt=full_prompt_for_quiz,
         model=model
     ).replace("```json", "").replace("```", "").replace("```json", "").replace("```", "")
     
-    with open("result_for_quiz.txt", "w", encoding="utf-8") as f:
-        f.write(result_for_quiz)
     result_for_quiz_json = json.loads(result_for_quiz)
-
-
-    with open("result_for_quiz.json", "w", encoding="utf-8") as f:
-        json.dump(result_for_quiz_json, f, indent=4, ensure_ascii=False)
 
     return full_prompt_json_for_quiz, result_for_quiz_json
 
