@@ -84,7 +84,7 @@ cd back-note
 #### Setting Up Your API Key
 1. Navigate to the "New Note" tab
 2. Enter your Google Gemini API key in the API Key field
-3. Select your preferred AI model (e.g., gemini-1.5-pro)
+3. Select your preferred AI model (e.g., gemini-2.5-pro)
 4. Your API key will be securely stored for future use
 
 ### 2. Creating Notes
@@ -189,7 +189,7 @@ STREAMLIT_SERVER_HEADLESS=true
 
 # AI Model Configuration
 GEMINI_API_KEY=your_api_key_here
-GEMINI_MODEL=gemini-1.5-pro
+GEMINI_MODEL=gemini-2.5-pro
 ```
 
 ### Database Schema

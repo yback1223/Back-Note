@@ -1,10 +1,19 @@
 import sqlite3
 import logging
 import traceback
+import os
 
 class MyDB:
-    def __init__(self, db_path: str = "my_app_database.db"):
-        self.db_path = db_path
+    def __init__(self, db_path: str = None):
+        if db_path is None:
+            # Use data directory if it exists, otherwise use current directory
+            data_dir = "data"
+            if os.path.exists(data_dir) or os.getenv('DOCKER_ENV'):
+                self.db_path = os.path.join(data_dir, "my_app_database.db")
+            else:
+                self.db_path = "my_app_database.db"
+        else:
+            self.db_path = db_path
         self.conn = None
         self.cursor = None
 
@@ -65,6 +74,17 @@ class MyDB:
                 )
             """)
             
+            # Create summary table
+            self.cursor.execute("""
+                CREATE TABLE IF NOT EXISTS summary (
+                    summary_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    note_id INTEGER NOT NULL,
+                    summary TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (note_id) REFERENCES note (note_id) ON DELETE CASCADE
+                )
+            """)
+
             # Create question table
             self.cursor.execute("""
                 CREATE TABLE IF NOT EXISTS question (
@@ -105,7 +125,6 @@ class MyDB:
             """)
             
             self.conn.commit()
-            print("데이터베이스 스키마가 성공적으로 초기화되었습니다.")
             
         except sqlite3.Error as e:
             logging.error(f"Database schema initialization error: {traceback.format_exc()}")

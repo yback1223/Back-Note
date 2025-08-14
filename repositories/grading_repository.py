@@ -38,9 +38,6 @@ class GradingRepository:
             self.cursor.execute("SELECT * FROM grading WHERE question_id = ?", (question_id,))
             result = self.cursor.fetchone()
             
-            if not result:
-                logging.warning(f"No grading found for question ID {question_id}")
-            
             return result
         except sqlite3.Error as e:
             logging.error(f"Database error in get_grading_by_question_id: {traceback.format_exc()}")

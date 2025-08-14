@@ -61,7 +61,7 @@ class QuestionRepository:
                 raise ValueError("Preview answer cannot be empty")
             
             # Validate question_type
-            valid_types = ["multiple_choice", "short_answer", "essay"]
+            valid_types = ["multiple_choice", "short_answer", "long_answer"]
             if question_type not in valid_types:
                 raise ValueError(f"Invalid question type. Must be one of: {valid_types}")
             

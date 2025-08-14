@@ -12,6 +12,7 @@ from repositories.note_hashtag_repository import NoteHashtagRepository
 from repositories.question_repository import QuestionRepository
 from repositories.option_repository import OptionRepository
 from repositories.grading_repository import GradingRepository
+from repositories.summary_repository import SummaryRepository
 import traceback
 import logging
 
@@ -30,7 +31,8 @@ class App:
                 "note_hashtag_repository": NoteHashtagRepository,
                 "question_repository": QuestionRepository,
                 "option_repository": OptionRepository,
-                "grading_repository": GradingRepository
+                "grading_repository": GradingRepository,
+                "summary_repository": SummaryRepository
             }
             
             for repo_name, repo_class in repository_classes.items():
@@ -64,94 +66,41 @@ class App:
             raise
 
     def run(self):
-        try:
-            # Initialize session state with error handling
-            if 'current_view' not in st.session_state:
-                st.session_state.current_view = "main"
-            
-            if 'previous_sidebar_selection' not in st.session_state:
-                st.session_state.previous_sidebar_selection = None
-            
-            # Validate language and sidebar configuration
-            if self.language == "en":
-                options = list(self.side_bar.keys())
-                page_dict = self.side_bar
-            else:
-                st.error(f"Unsupported language: {self.language}")
-                return
+        if 'current_view' not in st.session_state:
+            st.session_state.current_view = "main"
+        
+        if self.language == "en":
+            options = list(self.side_bar.keys())
+            page_dict = self.side_bar
 
-            # Render sidebar with error handling
-            try:
-                with st.sidebar:
-                    selection = option_menu(
-                        menu_title=None,
-                        options=options,
-                        default_index=0,
-                        orientation="vertical",
-                        icons=['house-door', 'pencil', 'archive'],
-                        styles={
-                            "nav-link": {
-                                "color": "var(--text-color)",
-                                "--hover-color": "#a2a4a8"
-                            },
-                            "nav-link-selected": {
-                                "background-color": "transparent",
-                                "color": "var(--text-color)"
-                            }
-                        }
-                    )
-            except Exception as e:
-                st.error(f"Failed to render sidebar: {str(e)}")
-                logging.error(f"Sidebar rendering error: {traceback.format_exc()}")
-                return
+        if 'previous_sidebar_selection' not in st.session_state:
+            st.session_state.previous_sidebar_selection = None
 
-            # Handle navigation logic with error handling
-            try:
-                if st.session_state.previous_sidebar_selection != selection:
-                    st.session_state.current_view = "main"
-                    st.session_state.previous_sidebar_selection = selection
+        with st.sidebar:
+            selection = option_menu(
+                menu_title=None,
+                options=options,
+                default_index=0,
+                orientation="vertical",
+                icons=['house-door', 'pencil', 'archive'],
+                styles={
+                    "nav-link": {
+                        "color": "var(--text-color)",
+                        "--hover-color": "#a2a4a8"
+                    },
+                    "nav-link-selected": {
+                        "background-color": "transparent",
+                        "color": "var(--text-color)"
+                    }
+                }
+            )
 
-                # Special handling for Note List - if already on note detail and Note List is clicked again
-                if (st.session_state.current_view == "note_detail" and 
-                    selection == "Note List" and 
-                    st.session_state.previous_sidebar_selection == "Note List"):
-                    st.session_state.current_view = "main"
-                    # Clear note detail related session state
-                    if 'selected_note_id' in st.session_state:
-                        del st.session_state.selected_note_id
-                    if 'selected_note_name' in st.session_state:
-                        del st.session_state.selected_note_name
-            except Exception as e:
-                st.error(f"Navigation error: {str(e)}")
-                logging.error(f"Navigation error: {traceback.format_exc()}")
-                return
+        if st.session_state.previous_sidebar_selection != selection:
+            st.session_state.current_view = "main"
+            st.session_state.previous_sidebar_selection = selection
 
-            # Render appropriate view with error handling
-            try:
-                if st.session_state.current_view == "note_detail":
-                    if hasattr(self, 'note_detail_view'):
-                        self.note_detail_view.render()
-                    else:
-                        st.error("Note detail view not available")
-                        st.session_state.current_view = "main"
-                        st.rerun()
-                else:
-                    if selection in page_dict:
-                        page = page_dict[selection]
-                        if hasattr(page, 'render'):
-                            page.render()
-                        else:
-                            st.error(f"Page {selection} does not have a render method")
-                    else:
-                        st.error(f"Page {selection} not found in page dictionary")
-            except Exception as e:
-                st.error(f"View rendering error: {str(e)}")
-                logging.error(f"View rendering error: {traceback.format_exc()}")
-                # Fallback to main view
-                st.session_state.current_view = "main"
-                st.rerun()
-                
-        except Exception as e:
-            st.error(f"Critical application error: {str(e)}")
-            logging.error(f"Critical application error: {traceback.format_exc()}")
-            st.stop()
+        if st.session_state.current_view == "note_detail":
+            self.note_detail_view.render()
+        else:
+            page = page_dict[selection]
+            page.render()

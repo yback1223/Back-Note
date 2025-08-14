@@ -8,6 +8,7 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app \
+    DOCKER_ENV=true \
     STREAMLIT_SERVER_PORT=8501 \
     STREAMLIT_SERVER_ADDRESS=0.0.0.0 \
     STREAMLIT_SERVER_HEADLESS=true \
@@ -18,6 +19,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
@@ -33,8 +35,13 @@ RUN uv sync --frozen
 COPY . .
 
 # Create non-root user for security
-RUN useradd --create-home --shell /bin/bash app && \
+RUN useradd --create-home --shell /bin/bash app
+
+# Create data directory and set permissions
+RUN mkdir -p /app/data /app/logs && \
     chown -R app:app /app
+
+# Switch to non-root user
 USER app
 
 # Expose Streamlit port

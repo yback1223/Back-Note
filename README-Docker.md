@@ -36,6 +36,23 @@ docker-compose -f docker-compose.prod.yml up --build -d
 - **개발 환경**: http://localhost:8501
 - **프로덕션 환경**: https://localhost
 
+## 💾 데이터 지속성 (중요!)
+
+### 데이터베이스 지속성
+- **데이터베이스 위치**: `./data/my_app_database.db`
+- **자동 생성**: 애플리케이션 첫 실행 시 자동으로 생성됩니다
+- **컨테이너 재시작 시**: 데이터가 보존됩니다
+- **컨테이너 삭제 시**: 데이터가 보존됩니다
+
+### 데이터 백업
+```bash
+# 데이터베이스 백업
+./scripts/start.sh backup
+
+# 수동 백업
+cp data/my_app_database.db data/backup_$(date +%Y%m%d_%H%M%S).db
+```
+
 ## 📁 프로젝트 구조
 
 ```
@@ -48,6 +65,7 @@ back-note/
 ├── scripts/
 │   └── start.sh              # 배포 스크립트
 ├── data/                     # 데이터베이스 파일 (자동 생성)
+│   └── my_app_database.db   # SQLite 데이터베이스
 ├── logs/                     # 로그 파일 (자동 생성)
 └── ssl/                      # SSL 인증서 (자동 생성)
 ```
@@ -69,8 +87,11 @@ back-note/
 # 로그 확인
 ./scripts/start.sh logs
 
-# 상태 확인
+# 상태 확인 (데이터베이스 포함)
 ./scripts/start.sh status
+
+# 데이터베이스 백업
+./scripts/start.sh backup
 
 # 전체 정리 (컨테이너, 이미지, 볼륨 삭제)
 ./scripts/start.sh clean
@@ -106,6 +127,9 @@ docker-compose -f docker-compose.prod.yml ps
 애플리케이션은 다음 환경 변수를 지원합니다:
 
 ```bash
+# Docker 환경 설정
+DOCKER_ENV=true
+
 # Streamlit 설정
 STREAMLIT_SERVER_PORT=8501
 STREAMLIT_SERVER_ADDRESS=0.0.0.0
@@ -125,7 +149,7 @@ PYTHONUNBUFFERED=1
 
 다음 디렉토리가 호스트에 마운트됩니다:
 
-- `./data:/app/data` - 데이터베이스 파일
+- `./data:/app/data` - 데이터베이스 파일 (지속성 보장)
 - `./logs:/app/logs` - 로그 파일
 - `./ssl:/app/ssl` - SSL 인증서 (프로덕션)
 
@@ -191,6 +215,8 @@ git pull origin main
 ./scripts/start.sh dev  # 또는 prod
 ```
 
+**중요**: 데이터베이스는 자동으로 보존되므로 업데이트 시 데이터 손실이 없습니다.
+
 ## 🐛 문제 해결
 
 ### 일반적인 문제
@@ -227,8 +253,20 @@ git pull origin main
    # 데이터베이스 파일 확인
    ls -la data/
    
+   # 데이터베이스 상태 확인
+   ./scripts/start.sh status
+   
    # 백업 생성
-   cp data/my_app_database.db data/backup_$(date +%Y%m%d_%H%M%S).db
+   ./scripts/start.sh backup
+   ```
+
+5. **데이터 지속성 문제**
+   ```bash
+   # 데이터베이스 파일 존재 확인
+   ls -la data/my_app_database.db
+   
+   # 볼륨 마운트 확인
+   docker-compose exec back-note ls -la /app/data/
    ```
 
 ### 로그 분석
@@ -294,6 +332,36 @@ docker-compose.staging.yml
 docker-compose.test.yml
 ```
 
+## 💾 데이터 관리
+
+### 데이터베이스 백업 및 복원
+
+```bash
+# 자동 백업
+./scripts/start.sh backup
+
+# 수동 백업
+cp data/my_app_database.db data/backup_$(date +%Y%m%d_%H%M%S).db
+
+# 백업에서 복원
+cp data/backup_YYYYMMDD_HHMMSS.db data/my_app_database.db
+```
+
+### 데이터 마이그레이션
+
+데이터베이스 스키마가 변경된 경우:
+
+```bash
+# 1. 백업 생성
+./scripts/start.sh backup
+
+# 2. 애플리케이션 업데이트
+git pull origin main
+
+# 3. 새 버전 시작 (스키마 자동 업데이트)
+./scripts/start.sh dev
+```
+
 ## 📞 지원
 
 문제가 발생하면 다음을 확인하세요:
@@ -303,5 +371,6 @@ docker-compose.test.yml
 3. 네트워크 연결
 4. 방화벽 설정
 5. 로그 파일
+6. 데이터베이스 파일 상태
 
 추가 지원이 필요한 경우 프로젝트 이슈를 생성하거나 개발팀에 문의하세요.

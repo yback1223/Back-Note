@@ -35,7 +35,6 @@ class NoteDetailView:
             note_id = st.session_state.selected_note_id
             note_name = st.session_state.selected_note_name
             
-            # Get note details with error handling
             try:
                 note_details = self.controller.repositories["note_repository"].get_note(note_id)
                 if not note_details:
@@ -48,7 +47,6 @@ class NoteDetailView:
             
             note_id, note_name, note_content, created_at = note_details
             
-            # Parse date with error handling
             try:
                 if isinstance(created_at, str):
                     try:
@@ -61,7 +59,6 @@ class NoteDetailView:
             
             formatted_date = created_at.strftime("%Y-%m-%d %H:%M")
             
-            # Header with back button and delete functionality
             col1, col2, col3 = st.columns([1, 3, 1])
             with col1:
                 if st.button("← Back", key="back_to_list"):
@@ -88,7 +85,6 @@ class NoteDetailView:
                         st.warning("Click delete again to confirm deletion")
                         st.rerun()
 
-            # Get questions with error handling
             try:
                 questions = self.controller.repositories["question_repository"].get_all_questions(note_id)
             except Exception as e:
@@ -98,22 +94,25 @@ class NoteDetailView:
             
             has_quiz_results = self._check_quiz_results(note_id, questions)
             
-            tab_labels = ["Note", "Review Quiz"]
+            tab_labels = ["Note", "Summary", "Review Quiz"]
             if has_quiz_results:
-                tab_labels.insert(1, "Quiz Result")
+                tab_labels.insert(2, "Quiz Result")
             
             tabs = st.tabs(tab_labels, width="stretch")
 
             with tabs[0]: 
                 self._render_note_content_tab(note_content, note_id)
             
+            with tabs[1]: 
+                self._render_summary_tab(note_id)
+
             if has_quiz_results:
-                with tabs[1]: 
-                    self._render_quiz_result_tab(note_id)
                 with tabs[2]: 
+                    self._render_quiz_result_tab(note_id)
+                with tabs[3]: 
                     self._render_review_quiz_tab(note_id)
             else:
-                with tabs[1]: 
+                with tabs[2]: 
                     self._render_review_quiz_tab(note_id)
                     
         except Exception as e:
@@ -162,6 +161,15 @@ class NoteDetailView:
         except Exception as e:
             logging.error(f"Error in _render_note_content_tab: {traceback.format_exc()}")
             st.error(f"Failed to render note content tab: {str(e)}")
+
+    def _render_summary_tab(self, note_id: int):
+        try:
+            st.markdown("### Summary")
+            summary: list[tuple[int, int, str, datetime]] = self.controller.repositories["summary_repository"].get_summary_by_note_id(note_id)
+            st.markdown(summary[0][2])
+        except Exception as e:
+            logging.error(f"Error in _render_summary_tab: {traceback.format_exc()}")
+            st.error(f"Failed to render summary tab: {str(e)}")
 
     def _render_quiz_result_tab(self, note_id: int):
         try:

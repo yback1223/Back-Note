@@ -63,19 +63,6 @@ class Controller:
         for key, value in states.items():
             if key not in st.session_state:
                 st.session_state[key] = value
-
-
-    def erase_bracked_source_citations(self, text: str):
-        def replacement_logic(match):
-            content_inside_brackets = match.group(1)
-            if re.fullmatch(r'[0-9,\s]*', content_inside_brackets):
-                return ""
-            else:
-                return match.group(0)
-
-        processed_text = re.sub(r'\[(.*?)\]', replacement_logic, text)
-        
-        return processed_text.strip()
     
     def handle_note_submission(self, api_key: str, note_name: str, note_tags: list[str], note_content: str, quiz_structure: dict, model: str):
         if st.session_state.note_submitted: reset_new_note_dialog(); return
@@ -91,13 +78,6 @@ class Controller:
                 model=model
             )
 
-            result_json["summary"] = self.erase_bracked_source_citations(result_json["summary"])
-            for question in result_json["quiz"]:
-                question["question"] = self.erase_bracked_source_citations(question["question"])
-                if question.get("options"):
-                    question["options"] = [self.erase_bracked_source_citations(option) for option in question["options"]]
-                question["answer"] = self.erase_bracked_source_citations(question["answer"])
-
             st.session_state.summary = result_json.get("summary", "Error fetching summary")
             st.session_state.quiz = result_json.get("quiz", [])
             st.session_state.question_id_with_question = question_id_with_question
@@ -111,7 +91,7 @@ class Controller:
         with st.spinner("AI is grading your quiz..."):
             _, result_json = self.submit_quiz.submit_quiz(api_key=api_key, quiz=quiz, model=model)
             for question in result_json.get("quiz"):
-                question_id = st.session_state.question_id_with_question[question.get("question")]
+                question_id = st.session_state.question_id_with_question.get(question.get("question"))
                 self.repositories["grading_repository"].insert_grading(
                     question_id, 
                     question.get("user_answer"), 
