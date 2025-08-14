@@ -11,4 +11,5 @@ dependencies = [
     "st-flexible-callout-elements>=0.2.1",
     "streamlit>=1.47.1",
     "streamlit-option-menu>=0.4.0",
+    "streamlit-tags>=1.2.8",
 ]
