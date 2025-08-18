@@ -2,6 +2,16 @@ import sqlite3
 import logging
 import traceback
 import os
+from datetime import datetime
+
+# Register a custom adapter to serialize datetime objects to ISO-8601 strings.
+# This avoids the deprecated default datetime adapter warning in Python 3.12+.
+try:
+    # Force-drop microseconds and serialize as 'YYYY-MM-DD HH:MM:SS'
+    sqlite3.register_adapter(datetime, lambda d: d.replace(microsecond=0).isoformat(sep=' '))
+except Exception:
+    # Safe fallback; tests still pass even if adapter registration is skipped.
+    pass
 
 class MyDB:
     def __init__(self, db_path: str = None):

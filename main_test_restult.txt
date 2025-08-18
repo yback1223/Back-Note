@@ -1,0 +1,116 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.11, pytest-8.4.1, pluggy-1.6.0
+rootdir: /Users/yback/projects/study/uv/back-note
+configfile: pytest.ini
+plugins: anyio-4.10.0
+collected 66 items
+
+tests/core_tests/test_api_retry_handler.py ...                           [  4%]
+tests/core_tests/test_note_data_processor.py ......                      [ 13%]
+tests/core_tests/test_note_prompt_builder.py ..                          [ 16%]
+tests/core_tests/test_note_result_validator.py ...                       [ 21%]
+tests/core_tests/test_quiz_prompt_builder.py ..                          [ 24%]
+tests/core_tests/test_quiz_result_validator.py ....                      [ 30%]
+tests/core_tests/test_submit_note.py ..                                  [ 33%]
+tests/core_tests/test_submit_quiz.py FF                                  [ 36%]
+tests/core_tests/test_text_cleaner.py .............                      [ 56%]
+tests/repository_tests/test_api_key_repository.py ...                    [ 60%]
+tests/repository_tests/test_grading_repository.py ...                    [ 65%]
+tests/repository_tests/test_my_db.py ........                            [ 77%]
+tests/repository_tests/test_note_hashtag_repository.py ...               [ 81%]
+tests/repository_tests/test_note_repository.py ...                       [ 86%]
+tests/repository_tests/test_option_repository.py ...                     [ 90%]
+tests/repository_tests/test_question_repository.py ...                   [ 95%]
+tests/repository_tests/test_summary_repository.py ...                    [100%]
+
+=================================== FAILURES ===================================
+_________________________ test_submit_quiz_happy_path __________________________
+
+self = <core.submit_quiz.SubmitQuiz object at 0x105247e00>, repositories = {}
+
+    def __init__(self, repositories: Dict[str, Any]):
+        try:
+            if not repositories:
+>               raise ValueError("Repositories dictionary cannot be empty")
+E               ValueError: Repositories dictionary cannot be empty
+
+core/submit_quiz.py:17: ValueError
+
+During handling of the above exception, another exception occurred:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x105247e60>
+
+    def test_submit_quiz_happy_path(monkeypatch):
+        repos = build_repos()
+>       sq = SubmitQuiz(repos)
+             ^^^^^^^^^^^^^^^^^
+
+tests/core_tests/test_submit_quiz.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <core.submit_quiz.SubmitQuiz object at 0x105247e00>, repositories = {}
+
+    def __init__(self, repositories: Dict[str, Any]):
+        try:
+            if not repositories:
+                raise ValueError("Repositories dictionary cannot be empty")
+    
+            self.repositories = repositories
+    
+        except Exception as e:
+            logging.error(f"Failed to initialize SubmitQuiz: {traceback.format_exc()}")
+>           raise Exception(f"Failed to initialize SubmitQuiz: {str(e)}")
+E           Exception: Failed to initialize SubmitQuiz: Repositories dictionary cannot be empty
+
+core/submit_quiz.py:23: Exception
+------------------------------ Captured log call -------------------------------
+ERROR    root:submit_quiz.py:22 Failed to initialize SubmitQuiz: Traceback (most recent call last):
+  File "/Users/yback/projects/study/uv/back-note/core/submit_quiz.py", line 17, in __init__
+    raise ValueError("Repositories dictionary cannot be empty")
+ValueError: Repositories dictionary cannot be empty
+______________________ test_submit_quiz_validation_errors ______________________
+
+self = <core.submit_quiz.SubmitQuiz object at 0x104df9f70>, repositories = {}
+
+    def __init__(self, repositories: Dict[str, Any]):
+        try:
+            if not repositories:
+>               raise ValueError("Repositories dictionary cannot be empty")
+E               ValueError: Repositories dictionary cannot be empty
+
+core/submit_quiz.py:17: ValueError
+
+During handling of the above exception, another exception occurred:
+
+    def test_submit_quiz_validation_errors():
+        repos = build_repos()
+>       sq = SubmitQuiz(repos)
+             ^^^^^^^^^^^^^^^^^
+
+tests/core_tests/test_submit_quiz.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <core.submit_quiz.SubmitQuiz object at 0x104df9f70>, repositories = {}
+
+    def __init__(self, repositories: Dict[str, Any]):
+        try:
+            if not repositories:
+                raise ValueError("Repositories dictionary cannot be empty")
+    
+            self.repositories = repositories
+    
+        except Exception as e:
+            logging.error(f"Failed to initialize SubmitQuiz: {traceback.format_exc()}")
+>           raise Exception(f"Failed to initialize SubmitQuiz: {str(e)}")
+E           Exception: Failed to initialize SubmitQuiz: Repositories dictionary cannot be empty
+
+core/submit_quiz.py:23: Exception
+------------------------------ Captured log call -------------------------------
+ERROR    root:submit_quiz.py:22 Failed to initialize SubmitQuiz: Traceback (most recent call last):
+  File "/Users/yback/projects/study/uv/back-note/core/submit_quiz.py", line 17, in __init__
+    raise ValueError("Repositories dictionary cannot be empty")
+ValueError: Repositories dictionary cannot be empty
+=========================== short test summary info ============================
+FAILED tests/core_tests/test_submit_quiz.py::test_submit_quiz_happy_path - Ex...
+FAILED tests/core_tests/test_submit_quiz.py::test_submit_quiz_validation_errors
+========================= 2 failed, 64 passed in 0.31s =========================
